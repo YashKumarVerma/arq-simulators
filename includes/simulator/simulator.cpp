@@ -6,11 +6,20 @@
 
 #include<iostream>
 #include<vector>
+
+// for time management
 #include <chrono>
 #include <thread>
 
+// for file operations
+#include <cstdio>
+#include <cstring>
+#include <cerrno>
+
 // peer services
 #include"./../rainbow/rainbow.h"
+#include"./../log/log.h"
+#include"./../simulator/simulator.h"
 
 // load class definitions
 #include"simulator.h"
@@ -53,4 +62,31 @@ bool Simulator::transmissionNotComplete(){
 // to tick the clock
 void Simulator::tick(){
     std::this_thread::sleep_for(std::chrono::milliseconds(this->frequency * 1000));
+}
+
+/**
+ * methods to be consumed by sender clients
+ */
+void Simulator::sendDataPacket(int packetIndex){
+    try{
+        log::sender_info("attempting to send packet :" + this->packetName(packetIndex));
+        
+        // try moving packet into transmission medium
+        if(rename(
+            string("./sender/"+this->packetName(packetIndex)).c_str(),
+            string("./channel/"+this->packetName(packetIndex)).c_str()
+        ) < 0 ) {
+            log::sender_error("error sending packet : " + to_string(packetIndex));
+        }else{
+
+            // if packet moved to transmission medium, update local state
+            log::sender_info("packet moved into medium :" + this->packetName(packetIndex));
+            this->sentCount++;
+        }
+
+
+    }catch(...){
+        // do not kill process if transmission failed
+        log::sender_error("error sending packet : " + to_string(packetIndex));
+    }
 }

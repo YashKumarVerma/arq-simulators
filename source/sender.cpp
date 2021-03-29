@@ -13,10 +13,12 @@ using namespace std;
 
 int main(){
     Simulator simulator(10, "sender");
+    int counter = 1;
     while(simulator.transmissionNotComplete()){
         
+        // send a packet every second
+        simulator.sendDataPacket(counter++);
         
-
         // tick the process cycle
         simulator.tick();
     }

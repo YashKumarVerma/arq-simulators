@@ -33,6 +33,20 @@ class Simulator {
 
         // bool
         void tick();
+
+
+        /**
+         * functions to be consumed by sender clients
+         */
+
+        // to get next data element
+        void sendDataPacket(int packetIndex);
+
+        /** utility functions for general usage **/
+        string packetName(int packetIndex){
+            return to_string(packetIndex) + ".txt";
+        }
+        
 };
 
 
