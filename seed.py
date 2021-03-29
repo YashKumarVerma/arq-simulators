@@ -19,8 +19,10 @@ def remove_packet_from(dir):
 
 # remove sender and receiver packets
 def clean_old_packets():
-    receiver = remove_packet_from('./receiver')
-    sender = remove_packet_from('./sender')
+    remove_packet_from('./receiver')
+    remove_packet_from('./sender')
+    remove_packet_from('./channel')
+    
 
 clean_old_packets()
 
