@@ -49,10 +49,15 @@ class Simulator {
 
         // to get next data element
         void sendDataPacket(int packetIndex);
+        bool sendAcknowledgementForPacketIfExist(int packetIndex);
 
         /** utility functions for general usage **/
         string packetName(int packetIndex){
             return to_string(packetIndex) + ".txt";
+        }
+
+        string ackName(int packetIndex){
+            return to_string(packetIndex) + ".ack";
         }
         
 };

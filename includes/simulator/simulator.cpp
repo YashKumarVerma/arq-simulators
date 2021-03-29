@@ -6,6 +6,7 @@
 
 #include<iostream>
 #include<vector>
+#include<fstream>
 
 // for time management
 #include <chrono>
@@ -15,6 +16,8 @@
 #include <cstdio>
 #include <cstring>
 #include <cerrno>
+
+// c++ 17 filesystems
 
 // peer services
 #include"./../rainbow/rainbow.h"
@@ -103,5 +106,26 @@ void Simulator::sendDataPacket(int packetIndex){
     }catch(...){
         // do not kill process if transmission failed
         log::sender_error("error sending packet : " + to_string(packetIndex));
+    }
+}
+
+bool Simulator::sendAcknowledgementForPacketIfExist(int packetIndex){
+    try{
+        // send acknowledgement for packet in channel
+        if(rename(
+            string("./channel/"+this->packetName(packetIndex)).c_str(),
+            string("./channel/"+this->ackName(packetIndex)).c_str()
+        ) < 0 ) {
+            log::receiver_info("no packed found : " + to_string(packetIndex));
+            return false;
+        }else{
+            // if packet moved to transmission medium, update local state
+            log::receiver_info("ack being transmitted  :" + this->ackName(packetIndex));
+            this->transmittedCount++;
+            return true;
+        }
+    }catch(...){
+        log::receiver_error("error sending ack : " + to_string(packetIndex));
+        return false;
     }
 }

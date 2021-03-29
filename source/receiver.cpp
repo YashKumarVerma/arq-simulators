@@ -8,17 +8,22 @@
 #include<vector>
 #include"./../includes/rainbow/rainbow.h"
 #include"./../includes/simulator/simulator.h"
+#include"./../includes/log/log.h"
 
 using namespace std;
 
 int main(){
     Simulator simulator(10, "receiver");
-    // while(simulator.transmissionNotComplete()){
-        
-        
 
-    //     // tick the process cycle
-    //     simulator.tick();
-    // }
+    int counter = 1;
+    while(simulator.receiverTransmissionNotComplete()){
+
+        // check if there is any packet received
+        if(simulator.sendAcknowledgementForPacketIfExist(counter)){
+            // expect next item now
+            counter++;
+        }
+        simulator.tick();
+    }
     return 0;
 }
