@@ -1,11 +1,11 @@
 all: bin/receiver bin/sender
 	make bin/receiver bin/sender
 
-bin/receiver: bin/receiver.o  bin/rainbow.o bin/simulator.o
-	g++ --std=c++17 bin/receiver.o bin/rainbow.o bin/simulator.o -o bin/receiver
+bin/receiver: bin/receiver.o  bin/rainbow.o bin/simulator.o bin/log.o
+	g++ --std=c++17 bin/receiver.o bin/rainbow.o bin/simulator.o bin/log.o -o bin/receiver
 
-bin/sender: bin/sender.o  bin/rainbow.o bin/simulator.o
-	g++ --std=c++17 bin/sender.o bin/rainbow.o bin/simulator.o -o bin/sender
+bin/sender: bin/sender.o  bin/rainbow.o bin/simulator.o bin/log.o
+	g++ --std=c++17 bin/sender.o bin/rainbow.o bin/simulator.o bin/log.o -o bin/sender
 
 
 # compiling sub-services
@@ -14,6 +14,9 @@ bin/rainbow.o: includes/rainbow/rainbow.cpp includes/rainbow/rainbow.h
 
 bin/simulator.o: includes/simulator/simulator.cpp includes/simulator/simulator.h
 	g++ --std=c++17 -c includes/simulator/simulator.cpp -o bin/simulator.o
+
+bin/log.o : includes/log/log.h
+	g++ --std=c++17 -c includes/log/log.cpp -o bin/log.o
 
 
 # final binary build mappings
