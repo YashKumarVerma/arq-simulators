@@ -18,6 +18,8 @@ class Simulator {
         int frequency;
 
     public:
+        bool waiting;
+
         // declare simulator environment
         Simulator(int packets, string name);
 
@@ -27,13 +29,17 @@ class Simulator {
 
         // set behavior about packet transmission
         void setClockFrequency(int seconds);
+        void setState(string state);
 
         // to check if transmission is complete or not
         bool transmissionNotComplete();
 
         // bool
         void tick();
-
+        
+        // state modifiers
+        void halt();
+        void release();
 
         /**
          * functions to be consumed by sender clients

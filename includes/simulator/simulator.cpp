@@ -34,6 +34,7 @@ Simulator::Simulator(int packets, string name){
     this->frequency = 1;
     cout << rainbow::underline(rainbow::bold("ARQ Simulator :: " + name)) << endl << endl; 
     cout << rainbow::italic(rainbow::green("by Yash Kumar Verma")) << endl<< endl; 
+    this->waiting = false;
 }
 
 // to change clock frequency as needed
@@ -41,6 +42,13 @@ void Simulator::setClockFrequency(int seconds){
     this->frequency = seconds;
 }
 
+void Simulator::halt(){
+    this->waiting = true;
+}
+
+void Simulator::release(){
+    this->waiting = false;
+}
 
 /**
  * Getters for data members
@@ -82,6 +90,7 @@ void Simulator::sendDataPacket(int packetIndex){
             // if packet moved to transmission medium, update local state
             log::sender_info("packet being transmitted  :" + this->packetName(packetIndex));
             this->sentCount++;
+            this->waiting = true;
         }
 
 

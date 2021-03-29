@@ -8,6 +8,7 @@
 #include<vector>
 #include"./../includes/rainbow/rainbow.h"
 #include"./../includes/simulator/simulator.h"
+#include"./../includes/log/log.h"
 
 using namespace std;
 
@@ -15,10 +16,14 @@ int main(){
     Simulator simulator(10, "sender");
     int counter = 1;
     while(simulator.transmissionNotComplete()){
-        
-        // send a packet every second
-        simulator.sendDataPacket(counter++);
-        
+
+       if(simulator.waiting == false){
+            simulator.sendDataPacket(counter++);
+            simulator.halt();
+       }else{
+            log::sender_info("waiting for receiver");
+       }
+       
         // tick the process cycle
         simulator.tick();
     }
