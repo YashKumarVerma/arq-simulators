@@ -49,6 +49,7 @@ class Simulator {
 
         // to get next data element
         void sendDataPacket(int packetIndex);
+        bool acceptAcknowledgementIfExist(int packetIndex);
         bool sendAcknowledgementForPacketIfExist(int packetIndex);
 
         /** utility functions for general usage **/
@@ -58,6 +59,10 @@ class Simulator {
 
         string ackName(int packetIndex){
             return to_string(packetIndex) + ".ack";
+        }
+
+        string receivedName(int packetIndex){
+            return to_string(packetIndex) + ".done";
         }
         
 };

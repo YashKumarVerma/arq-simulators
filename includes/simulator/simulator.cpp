@@ -109,6 +109,28 @@ void Simulator::sendDataPacket(int packetIndex){
     }
 }
 
+bool Simulator::acceptAcknowledgementIfExist(int packetIndex){
+    try{
+        // send acknowledgement for packet in channel
+        if(rename(
+            string("./channel/"+this->ackName(packetIndex)).c_str(),
+            string("./channel/"+this->receivedName(packetIndex)).c_str()
+        ) < 0 ) {
+            log::receiver_info("waiting ro ack of packet #" + to_string(packetIndex));
+            return false;
+        }else{
+            // if packet moved to transmission medium, update local state
+            log::receiver_info("ack received for packet #" + to_string(packetIndex));
+            this->receivedCount++;
+            this->release();
+            return true;
+        }
+    }catch(...){
+        log::receiver_error("error sending ack : " + to_string(packetIndex));
+        return false;
+    }
+}
+
 bool Simulator::sendAcknowledgementForPacketIfExist(int packetIndex){
     try{
         // send acknowledgement for packet in channel
@@ -116,7 +138,6 @@ bool Simulator::sendAcknowledgementForPacketIfExist(int packetIndex){
             string("./channel/"+this->packetName(packetIndex)).c_str(),
             string("./channel/"+this->ackName(packetIndex)).c_str()
         ) < 0 ) {
-            log::receiver_info("no packed found : " + to_string(packetIndex));
             return false;
         }else{
             // if packet moved to transmission medium, update local state

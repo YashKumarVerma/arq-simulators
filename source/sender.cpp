@@ -21,9 +21,9 @@ int main(){
             simulator.sendDataPacket(counter++);
             simulator.halt();
        }else{
-            log::sender_info("waiting for acknowledgement");
+           simulator.acceptAcknowledgementIfExist(counter-1);
        }
-       
+      
         // tick the process cycle
         simulator.tick();
     }
