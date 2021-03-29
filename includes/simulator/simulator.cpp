@@ -19,11 +19,11 @@ using namespace std;
 
 
 // set number of packets in system
-Simulator::Simulator(int packets){
+Simulator::Simulator(int packets, string name){
     this->totalCount = packets;
     this->sentCount = 0;
     this->frequency = 1;
-    cout << rainbow::underline(rainbow::bold("ARQ Simulator")) << endl << endl; 
+    cout << rainbow::underline(rainbow::bold("ARQ Simulator :: " + name)) << endl << endl; 
     cout << rainbow::italic(rainbow::green("by Yash Kumar Verma")) << endl<< endl; 
 }
 
@@ -46,8 +46,8 @@ int Simulator::getPacketsLeft(){
 
 
 // returns true if transmission is complete
-bool Simulator::isTransmissionComplete(){
-    return this->sentCount == this->totalCount;
+bool Simulator::transmissionNotComplete(){
+    return this->sentCount != this->totalCount;
 }
 
 // to tick the clock

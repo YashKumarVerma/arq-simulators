@@ -1,6 +1,6 @@
 #editor
 .vscode/*
-bin
+*.o
 # Prerequisites
 *.d
 *.txt
