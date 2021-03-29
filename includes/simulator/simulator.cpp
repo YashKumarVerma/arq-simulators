@@ -80,7 +80,7 @@ void Simulator::sendDataPacket(int packetIndex){
         }else{
 
             // if packet moved to transmission medium, update local state
-            log::sender_info("packet moved into medium :" + this->packetName(packetIndex));
+            log::sender_info("packet being transmitted  :" + this->packetName(packetIndex));
             this->sentCount++;
         }
 
