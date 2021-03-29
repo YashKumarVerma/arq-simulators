@@ -1,3 +1,38 @@
+ENVIRONMENT_DIR=./environment
+
+# to run the simulation in one line
+simulate: bin/receiver bin/sender
+	#
+	#
+	# removing old builds
+	#
+	#
+	rm -rf bin/*
+
+	#
+	#
+	# building packages
+	#
+	#
+	make all
+
+	#
+	#
+	# take artifacts into environment
+	#
+	#
+	cp bin/sender environment/client_sender
+	cp bin/receiver environment/client_receiver
+	cp seed.py environment/seed.py
+
+	#
+	#
+	# Enter environment
+	# python3 seed.py
+	# ./client_sender
+	#
+	#
+
 all: bin/receiver bin/sender
 	make bin/receiver bin/sender
 

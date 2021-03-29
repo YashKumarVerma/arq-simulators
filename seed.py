@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from os import walk, remove
 
 # to create a new packet with data
