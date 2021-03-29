@@ -3,16 +3,18 @@
 
 #include<string>
 
+using namespace std;
+
 class rainbow{
     public:
-        static std::string orange(std::string str);
-        static std::string green(std::string str); 
-        static std::string red(std::string str);
-        static std::string grey(std::string str);
-		static std::string bold(std::string str);
-		static std::string italic(std::string str);
-		static std::string underline(std::string str);
-		static std::string strike(std::string str);
+        static string orange(string str);
+        static string green(string str); 
+        static string red(string str);
+        static string grey(string str);
+		static string bold(string str);
+		static string italic(string str);
+		static string underline(string str);
+		static string strike(string str);
 };
 
 #endif
