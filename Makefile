@@ -8,6 +8,17 @@ simulate: bin/receiver bin/sender
 	#
 	#
 	rm -rf bin/*
+	rm -rf environment
+	
+	#
+	#
+	# building directory tree
+	#
+	#
+	mkdir environment
+	mkdir environment/sender
+	mkdir environment/receiver
+	mkdir environment/channel
 
 	#
 	#
