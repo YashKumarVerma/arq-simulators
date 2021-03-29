@@ -14,7 +14,8 @@ using namespace std;
 class Simulator {
     private:
         int totalCount;
-        int sentCount;
+        int transmittedCount;
+        int receivedCount;
         int frequency;
 
     public:
@@ -24,15 +25,16 @@ class Simulator {
         Simulator(int packets, string name);
 
         // get details about packet transmission
-        int getPacketsLeft();
-        int getPacketsSent();
+        int getPacketsSentBySender();
+        int getPacketsLeftWithSender();
 
         // set behavior about packet transmission
         void setClockFrequency(int seconds);
         void setState(string state);
 
         // to check if transmission is complete or not
-        bool transmissionNotComplete();
+        bool senderTransmissionNotComplete();
+        bool receiverTransmissionNotComplete();
 
         // bool
         void tick();

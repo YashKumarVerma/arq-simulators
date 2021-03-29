@@ -13,12 +13,12 @@ using namespace std;
 
 int main(){
     Simulator simulator(10, "receiver");
-    while(simulator.transmissionNotComplete()){
+    // while(simulator.transmissionNotComplete()){
         
         
 
-        // tick the process cycle
-        simulator.tick();
-    }
+    //     // tick the process cycle
+    //     simulator.tick();
+    // }
     return 0;
 }

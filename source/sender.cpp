@@ -15,7 +15,7 @@ using namespace std;
 int main(){
     Simulator simulator(10, "sender");
     int counter = 1;
-    while(simulator.transmissionNotComplete()){
+    while(simulator.senderTransmissionNotComplete()){
 
        if(simulator.waiting == false){
             simulator.sendDataPacket(counter++);

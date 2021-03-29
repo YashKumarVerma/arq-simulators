@@ -30,11 +30,12 @@ using namespace std;
 // set number of packets in system
 Simulator::Simulator(int packets, string name){
     this->totalCount = packets;
-    this->sentCount = 0;
+    this->receivedCount = 0;
+    this->transmittedCount = 0;
     this->frequency = 1;
+    this->waiting = false;
     cout << rainbow::underline(rainbow::bold("ARQ Simulator :: " + name)) << endl << endl; 
     cout << rainbow::italic(rainbow::green("by Yash Kumar Verma")) << endl<< endl; 
-    this->waiting = false;
 }
 
 // to change clock frequency as needed
@@ -53,19 +54,24 @@ void Simulator::release(){
 /**
  * Getters for data members
  */
-int Simulator::getPacketsSent(){
-    return this->sentCount;
+int Simulator::getPacketsSentBySender(){
+    return this->transmittedCount;
 }
 
-int Simulator::getPacketsLeft(){
-    return this->totalCount - this->sentCount;
+int Simulator::getPacketsLeftWithSender(){
+    return this->totalCount - this->transmittedCount;
 }
 
 
 // returns true if transmission is complete
-bool Simulator::transmissionNotComplete(){
-    return this->sentCount != this->totalCount;
+bool Simulator::senderTransmissionNotComplete(){
+    return this->transmittedCount != this->totalCount;
 }
+
+bool Simulator::receiverTransmissionNotComplete(){
+    return this->totalCount != this->receivedCount;
+}
+
 
 // to tick the clock
 void Simulator::tick(){
@@ -89,7 +95,7 @@ void Simulator::sendDataPacket(int packetIndex){
 
             // if packet moved to transmission medium, update local state
             log::sender_info("packet being transmitted  :" + this->packetName(packetIndex));
-            this->sentCount++;
+            this->transmittedCount++;
             this->waiting = true;
         }
 
