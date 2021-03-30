@@ -118,7 +118,7 @@ bool Simulator::acceptAcknowledgementIfExist(int packetIndex){
             return false;
         }else{
             // if packet moved to transmission medium, update local state
-            log::receiver_info("ack received for packet #" + to_string(packetIndex));
+            log::receiver_info("acknowledgement received for packet #" + to_string(packetIndex));
             this->receivedCount++;
             return true;
         }

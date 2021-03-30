@@ -14,7 +14,7 @@ using namespace std;
 
 int main(){
     Simulator simulator(20, "sender");
-    simulator.setClockFrequency(2);
+    simulator.setClockFrequency(4);
 
     int n = 4;
     int max_timeout_range = 10; 

@@ -14,6 +14,7 @@ using namespace std;
 
 int main(){
     Simulator simulator(20, "receiver");
+    simulator.setClockFrequency(6);
 
     int counter = 1;
     while(simulator.receiverTransmissionNotComplete()){
