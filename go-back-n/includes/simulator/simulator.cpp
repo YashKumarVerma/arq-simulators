@@ -95,18 +95,9 @@ void Simulator::sendDataPacket(int packetIndex){
         log::sender_info("attempting to send packet :" + this->packetName(packetIndex));
         
         // try moving packet into transmission medium
-        if(rename(
-            string("./sender/"+this->packetName(packetIndex)).c_str(),
-            string("./channel/"+this->packetName(packetIndex)).c_str()
-        ) < 0 ) {
-            log::sender_error("error sending packet : " + to_string(packetIndex));
-        }else{
-
-            // if packet moved to transmission medium, update local state
-            log::sender_info("packet being transmitted  :" + this->packetName(packetIndex));
-            this->transmittedCount++;
-        }
-
+        copy("./sender/"+this->packetName(packetIndex),"./channel/"+this->packetName(packetIndex));
+        log::sender_info("packet being transmitted  :" + this->packetName(packetIndex));
+        this->transmittedCount++;
 
     }catch(...){
         // do not kill process if transmission failed
