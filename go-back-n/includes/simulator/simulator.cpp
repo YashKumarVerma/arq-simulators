@@ -112,6 +112,8 @@ bool Simulator::acceptAcknowledgementIfExist(int packetIndex){
             string("./channel/"+this->ackName(packetIndex)).c_str(),
             string("./channel/"+this->receivedName(packetIndex)).c_str()
         ) < 0 ) {
+
+            copy("./channel/"+this->ackName(packetIndex),"./receiver/"+this->packetName(packetIndex));
             log::receiver_info("waiting for ack of packet #" + to_string(packetIndex));
             return false;
         }else{
