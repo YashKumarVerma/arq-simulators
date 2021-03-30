@@ -29,6 +29,12 @@
 
 using namespace std;
 
+// utility function to create a copy of file
+void copy(string from, string to){
+    std::ifstream  src(from, std::ios::binary);
+    std::ofstream  dst(to,   std::ios::binary);
+    dst << src.rdbuf();
+}
 
 // set number of packets in system
 Simulator::Simulator(int packets, string name){
@@ -68,7 +74,7 @@ int Simulator::getPacketsLeftWithSender(){
 
 // returns true if transmission is complete
 bool Simulator::senderTransmissionNotComplete(){
-    return this->transmittedCount != this->totalCount;
+    return this->receivedCount != this->totalCount;
 }
 
 bool Simulator::receiverTransmissionNotComplete(){
@@ -99,7 +105,6 @@ void Simulator::sendDataPacket(int packetIndex){
             // if packet moved to transmission medium, update local state
             log::sender_info("packet being transmitted  :" + this->packetName(packetIndex));
             this->transmittedCount++;
-            this->waiting = true;
         }
 
 
@@ -116,13 +121,12 @@ bool Simulator::acceptAcknowledgementIfExist(int packetIndex){
             string("./channel/"+this->ackName(packetIndex)).c_str(),
             string("./channel/"+this->receivedName(packetIndex)).c_str()
         ) < 0 ) {
-            log::receiver_info("waiting ro ack of packet #" + to_string(packetIndex));
+            log::receiver_info("waiting for ack of packet #" + to_string(packetIndex));
             return false;
         }else{
             // if packet moved to transmission medium, update local state
             log::receiver_info("ack received for packet #" + to_string(packetIndex));
             this->receivedCount++;
-            this->release();
             return true;
         }
     }catch(...){
@@ -148,5 +152,15 @@ bool Simulator::sendAcknowledgementForPacketIfExist(int packetIndex){
     }catch(...){
         log::receiver_error("error sending ack : " + to_string(packetIndex));
         return false;
+    }
+}
+
+
+void Simulator::abandonPacket(int packetIndex){
+    try{
+        copy("./channel/"+this->packetName(packetIndex),"./sender/"+this->packetName(packetIndex));
+        log::sender_info("Discard old packet #" + to_string(packetIndex));
+    }catch(...){
+        log::sender_error("Error Discard old packet #" + to_string(packetIndex));
     }
 }

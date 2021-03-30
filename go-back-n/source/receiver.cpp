@@ -13,7 +13,7 @@
 using namespace std;
 
 int main(){
-    Simulator simulator(10, "receiver");
+    Simulator simulator(20, "receiver");
 
     int counter = 1;
     while(simulator.receiverTransmissionNotComplete()){

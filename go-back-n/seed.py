@@ -27,6 +27,6 @@ def clean_old_packets():
 
 clean_old_packets()
 
-for i in range(1,11):
+for i in range(1,21):
     print(f'Generating network packet {i}')
     create_file_and_write(f'./sender/{i}.txt', f'packet_{i}')

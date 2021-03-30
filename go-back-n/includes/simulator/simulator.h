@@ -51,6 +51,7 @@ class Simulator {
         void sendDataPacket(int packetIndex);
         bool acceptAcknowledgementIfExist(int packetIndex);
         bool sendAcknowledgementForPacketIfExist(int packetIndex);
+        void abandonPacket(int packetIndex);
 
         /** utility functions for general usage **/
         string packetName(int packetIndex){
