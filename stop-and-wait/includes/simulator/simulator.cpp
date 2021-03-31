@@ -46,6 +46,12 @@ void Simulator::setClockFrequency(int seconds){
     this->frequency = seconds;
 }
 
+
+void Simulator::setErrorRate(int errorRate){
+    this->errorRate = errorRate;
+    this->successRate = 1-errorRate;
+}
+
 void Simulator::halt(){
     this->waiting = true;
 }
@@ -86,8 +92,6 @@ void Simulator::tick(){
  */
 void Simulator::sendDataPacket(int packetIndex){
     try{
-        log::sender_info("attempting to send packet :" + this->packetName(packetIndex));
-        
         // try moving packet into transmission medium
         if(rename(
             string("./sender/"+this->packetName(packetIndex)).c_str(),

@@ -12,18 +12,44 @@
 
 using namespace std;
 
+
+/** to facilitate creating problems in transmission based on frequency **/
+bool problemCreator(float errorRate){
+    int number = rand()%(11);
+    return number < errorRate;
+}
+
+
 int main(){
-    Simulator simulator(10, "sender");
+    srand(time(0));
+
+    /** set the fraction of error rate. This is applied on all operations **/
+    int error_rate = 3;
+    int total_packets = 10;
+    float simulator_frequency = 1.0;
+
+
+    /** all configurations end here, now application codebase **/
+    Simulator simulator(total_packets, "sender");
+    simulator.setClockFrequency(simulator_frequency);
+    simulator.setErrorRate(error_rate);
+    
+
     int counter = 1;
     while(simulator.senderTransmissionNotComplete()){
 
        if(simulator.waiting == false){
+            /** this simulates packet loss **/
+            if(problemCreator(simulator.errorRate)){
+                log::sender_error("Packet loss encountered, packet # " + to_string(counter));
+                counter++;
+            }
+
             simulator.sendDataPacket(counter++);
             simulator.halt();
-       }else{
-           simulator.acceptAcknowledgementIfExist(counter-1);
        }
-      
+       simulator.acceptAcknowledgementIfExist(counter-1);
+       
         // tick the process cycle
         simulator.tick();
     }

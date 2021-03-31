@@ -50,6 +50,12 @@ Simulator::Simulator(int packets, string name){
 // to change clock frequency as needed
 void Simulator::setClockFrequency(int seconds){
     this->frequency = seconds;
+    cout << rainbow::orange("Clock Speed:") << "One Cycle every " <<rainbow::green(to_string(this->frequency)) << " seconds" << endl << endl;
+}
+
+void Simulator::setErrorRate(int errorRate){
+    this->errorRate = errorRate;
+    this->successRate = 1-errorRate;
 }
 
 void Simulator::halt(){
@@ -114,11 +120,11 @@ bool Simulator::acceptAcknowledgementIfExist(int packetIndex){
         ) < 0 ) {
 
             copy("./channel/"+this->ackName(packetIndex),"./receiver/"+this->packetName(packetIndex));
-            log::receiver_info("waiting for ack of packet #" + to_string(packetIndex));
+            log::sender_info("waiting for ack of packet #" + to_string(packetIndex));
             return false;
         }else{
             // if packet moved to transmission medium, update local state
-            log::receiver_info("acknowledgement received for packet #" + to_string(packetIndex));
+            log::sender_info("acknowledgement received for packet #" + to_string(packetIndex));
             this->receivedCount++;
             return true;
         }

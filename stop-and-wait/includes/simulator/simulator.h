@@ -20,6 +20,8 @@ class Simulator {
 
     public:
         bool waiting;
+        int successRate;
+        int errorRate;
 
         // declare simulator environment
         Simulator(int packets, string name);
@@ -31,6 +33,7 @@ class Simulator {
         // set behavior about packet transmission
         void setClockFrequency(int seconds);
         void setState(string state);
+        void setErrorRate(int errorRate);
 
         // to check if transmission is complete or not
         bool senderTransmissionNotComplete();
@@ -64,7 +67,6 @@ class Simulator {
         string receivedName(int packetIndex){
             return to_string(packetIndex) + ".done";
         }
-        
 };
 
 
