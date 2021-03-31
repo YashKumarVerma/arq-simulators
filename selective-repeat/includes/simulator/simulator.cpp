@@ -18,6 +18,7 @@
 #include <cerrno>
 
 // c++ 17 filesystems
+#include <filesystem>
 
 // peer services
 #include"./../rainbow/rainbow.h"
@@ -28,6 +29,7 @@
 #include"simulator.h"
 
 using namespace std;
+namespace fs = std::filesystem;
 
 // utility function to create a copy of file
 void copy(string from, string to){
@@ -161,5 +163,51 @@ void Simulator::abandonPacket(int packetIndex){
         log::sender_info("Discard old packet #" + to_string(packetIndex));
     }catch(...){
         log::sender_error("Error Discard old packet #" + to_string(packetIndex));
+    }
+}
+
+/** differentiates selective repeat from n-repeat **/
+/** method to handle negative acknowledgement from receiver **/
+void Simulator::resendNegativeAcknowledgement(){
+    try{
+        string path = "./channel";
+        for (const auto & entry : fs::directory_iterator(path)){
+            string fileName = fs::path(entry.path()).stem();
+            string extension = fs::path(entry.path()).extension();
+            
+            if(extension == ".nack"){
+                if(
+                    rename(
+                        ("./channel/"+fileName+".nack").c_str(),
+                        ("./channel/" + this->packetName(stoi(fileName))).c_str()
+                    ) != 0
+                ) {
+                    log::sender_error("Error responding to negative acknowledgement of packet # " + fileName);
+                }else{
+                    log::sender_error("Responding to Negative Acknowledgement, resending packet #" + fileName);
+                }
+            }
+        
+        }
+    }catch(...){
+        log::sender_error("error responding to negative acknowledgement");
+    }
+}
+
+
+void Simulator::initiateNegativeAcknowledgement(int packetIndex){
+    try{
+        if(
+            rename(
+                ("./sender/"+ this->packetName(packetIndex)).c_str(),
+                ("./channel/"+to_string(packetIndex)+".nack").c_str()
+            ) != 0
+        ) {
+            log::sender_error("Error sending acknowledgement for packet # " + to_string(packetIndex));
+        }else{
+            log::sender_error("Sending Negative Acknowledgement for packet #" + to_string(packetIndex));
+        }
+    }catch(...){
+        log::receiver_error("error sending negative acknowledgement");
     }
 }

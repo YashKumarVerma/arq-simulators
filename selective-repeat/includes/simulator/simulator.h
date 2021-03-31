@@ -55,6 +55,8 @@ class Simulator {
         bool acceptAcknowledgementIfExist(int packetIndex);
         bool sendAcknowledgementForPacketIfExist(int packetIndex);
         void abandonPacket(int packetIndex);
+        void resendNegativeAcknowledgement();
+        void initiateNegativeAcknowledgement(int packetIndex);
 
         /** utility functions for general usage **/
         string packetName(int packetIndex){

@@ -50,11 +50,14 @@ int main(){
     int lower = 1;
     int upper = lower + n;
     
+    /** initialize total packets**/
+    vector<int>verifiedDeliveryTable(total_packets+1, 0);
+
 
     // till we get callback for each packet
     while(simulator.senderTransmissionNotComplete()){
         
-        while(lower <= upper && lower <= total_packets){
+        while(lower <= total_packets){
 
             /** this simulates packet loss **/
             if(problemCreator(simulator.errorRate)){
@@ -67,7 +70,7 @@ int main(){
         //    the first element of sliding window is verified 
         while(simulator.acceptAcknowledgementIfExist(anchor)){
             log::sender_info("Received acknowledgement for #" + to_string(anchor));
-            upper++;
+            verifiedDeliveryTable.at(anchor) = 1;
             anchor++;
             timeout = 0;
         }
@@ -79,21 +82,20 @@ int main(){
         if(timeout < max_timeout_range){
             timeout++;
             log::sender_info("Waiting for acknowledgement for packet #" + to_string(anchor) + ", timeout = " + to_string(timeout));
-        }else{
-            // trigger request burst again
-            lower = anchor;
-            upper = lower + n;
-            if(upper > total_packets){
-                upper = total_packets;
+        }
+        else{
+            /** do nothing, just send the first missing acknowledgment index **/
+            for(int i=0; i<total_packets; i++){
+                if(verifiedDeliveryTable.at(i) == 0){
+                    simulator.sendDataPacket(i);
+                    log::sender_error("Request timed out, resending individual packet " + to_string(i));
+                }
             }
-            timeout = 0;
 
-            for(int i=anchor; i<upper; i++){
-                simulator.abandonPacket(i);
-            }
-            log::sender_error("Request timed out, sending packets from " + to_string(lower) + " to " + to_string(upper));
+            timeout = 0;
         }
 
+        simulator.resendNegativeAcknowledgement();
         // tick the process cycle
         simulator.tick();
     }

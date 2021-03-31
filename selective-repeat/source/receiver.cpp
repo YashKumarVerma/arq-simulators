@@ -29,11 +29,15 @@ int main(){
     float simulator_frequency = 1.0;
 
 
+    vector<int>verifiedDeliveryTable(total_packets+1, 0);
+
+
     Simulator simulator(total_packets, "receiver");
     simulator.setClockFrequency(simulator_frequency);
     simulator.setErrorRate(error_rate);
 
     int counter = 1;
+    int timer = 0;
     while(simulator.receiverTransmissionNotComplete() && counter != total_packets){
 
         /** simulate acknowledgement loss **/
@@ -43,10 +47,29 @@ int main(){
 
         // check if there is any packet received
         if(simulator.sendAcknowledgementForPacketIfExist(counter)){
+            verifiedDeliveryTable.at(counter) = 1;
             // expect next item now
             counter++;
         }
 
+
+        /** 
+         * send negative acknowledgement for all who were not
+         * sent any response, either due to acknowledgemet loss
+         * or timeout
+         **/
+        if(timer <= 5){
+            for(int i=0; i < total_packets; i++){
+                if(verifiedDeliveryTable.at(i) == 0){
+                    simulator.initiateNegativeAcknowledgement(i);
+                }
+            }
+
+            /** timer implemented to avoid frequent negative responses **/
+            timer = 0;
+        }
+
+        timer++;
         simulator.tick();
     }
     return 0;
