@@ -59,7 +59,7 @@ int main(){
          * or timeout
          **/
         if(timer <= 5){
-            for(int i=0; i < total_packets; i++){
+            for(int i=1; i < total_packets && i < counter-1; i++){
                 if(verifiedDeliveryTable.at(i) == 0){
                     simulator.initiateNegativeAcknowledgement(i);
                 }
