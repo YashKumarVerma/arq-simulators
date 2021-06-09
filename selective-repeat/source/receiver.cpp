@@ -24,7 +24,7 @@ int main(){
     srand(time(0));
 
     /** simulator configurations **/
-    int error_rate = 3;
+    int error_rate = 2;
     int total_packets = 10;
     float simulator_frequency = 1.0;
 
@@ -42,7 +42,7 @@ int main(){
 
         /** simulate acknowledgement loss **/
         if(problemCreator(simulator.errorRate)){
-            log::receiver_error("acknowledgement lost for packet # " + to_string(counter));
+            log::receiver_error("error in operation related to packet (ack lost possibly) " + to_string(counter));
         }
 
         // check if there is any packet received

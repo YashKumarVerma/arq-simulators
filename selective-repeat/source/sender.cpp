@@ -1,9 +1,3 @@
-/**
- *@author: YashKumarVerma
- *@desc: main entry point of application
- *@time: Tuesday 30-March-2021 01:18:27
- **/
-
 #include<iostream>
 #include<vector>
 
@@ -27,12 +21,12 @@ int main(){
     srand(time(0));
     
     /** set the fraction of error rate. This is applied on all operations **/
-    int error_rate = 3;
+    int error_rate = 2;
     int total_packets = 10;
     float simulator_frequency = 1.0;
 
     /** set window size **/
-    int n = 4;
+    int n = 5;
 
     /** set max timeout limit **/
     int max_timeout_range = 10; 

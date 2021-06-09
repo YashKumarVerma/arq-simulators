@@ -1,8 +1,4 @@
-/**
- *@author: YashKumarVerma
- *@desc: simulator class for generic operations
- *@time: Tuesday 30-March-2021 01:27:25
- **/
+
 
 #include<iostream>
 #include<vector>
